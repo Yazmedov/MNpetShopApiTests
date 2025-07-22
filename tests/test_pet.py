@@ -24,7 +24,6 @@ class TestPet:
                        "status": "available"
                        }
 
-        with allure.step("Отправка запроса на обновление несуществующего питомца"):
             response = requests.put(url=f"{BASE_URL}/pet", json=payload)
 
         with allure.step("Проверка статуса ответа"):
