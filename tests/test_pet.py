@@ -99,9 +99,6 @@ class TestPet:
             pet_id = create_pet["id"]
         with allure.step("Отправка запроса на получение информации о питомце по ID"):
             response = requests.get(f"{BASE_URL}/pet/{pet_id}")
-        with allure.step("Проверка статуса ответа"):
-            assert response.status_code == 200
-            assert response.json()["id"] == pet_id
         with allure.step("Отправка запроса на обновление питомца"):
             payload = {"id": 1,
                        "name": "Buddy Updated1",
@@ -111,6 +108,7 @@ class TestPet:
         with allure.step("Проверка статуса ответа"):
             assert response.status_code == 200
             response_json = response.json()
+        with allure.step("Проверка полей"):
             assert response_json['id'] == payload['id'], "id питомцев не совпадает с ожидаемым"
             assert response_json['name'] == payload['name'], "name питомцев не совпадает с ожидаемым"
             assert response_json['status'] == payload['status'], "status питомцев не совпадает с ожидаемым"
@@ -122,6 +120,7 @@ class TestPet:
             response = requests.get(f"{BASE_URL}/pet/{pet_id}")
         with allure.step("Проверка статуса ответа"):
             assert response.status_code == 200
+        with allure.step("Проверка полей")
             assert response.json()["id"] == pet_id
         with allure.step("Отправка запроса на удаление питомца"):
             response = requests.delete(url=f"{BASE_URL}/pet/{pet_id}")
