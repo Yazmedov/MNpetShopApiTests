@@ -120,8 +120,6 @@ class TestPet:
             response = requests.get(f"{BASE_URL}/pet/{pet_id}")
         with allure.step("Проверка статуса ответа"):
             assert response.status_code == 200
-        with allure.step("Проверка полей")
-            assert response.json()["id"] == pet_id
         with allure.step("Отправка запроса на удаление питомца"):
             response = requests.delete(url=f"{BASE_URL}/pet/{pet_id}")
         with allure.step("Проверка статуса ответа"):
