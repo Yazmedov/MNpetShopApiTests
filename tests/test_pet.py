@@ -122,3 +122,4 @@ class TestPet:
             response = requests.get(f"{BASE_URL}/pet/{pet_id}")
             assert response.status_code == 404
 
+
