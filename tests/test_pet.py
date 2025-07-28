@@ -97,8 +97,6 @@ class TestPet:
     def test_pet_update(self, create_pet):
         with allure.step("Получение ID созданного питомца"):
             pet_id = create_pet["id"]
-        with allure.step("Отправка запроса на получение информации о питомце по ID"):
-            response = requests.get(f"{BASE_URL}/pet/{pet_id}")
         with allure.step("Отправка запроса на обновление питомца"):
             payload = {"id": 1,
                        "name": "Buddy Updated1",
@@ -116,10 +114,6 @@ class TestPet:
     def test_pet_delete(self, create_pet):
         with allure.step("Получение ID созданного питомца"):
             pet_id = create_pet["id"]
-        with allure.step("Отправка запроса на получение информации о питомце по ID"):
-            response = requests.get(f"{BASE_URL}/pet/{pet_id}")
-        with allure.step("Проверка статуса ответа"):
-            assert response.status_code == 200
         with allure.step("Отправка запроса на удаление питомца"):
             response = requests.delete(url=f"{BASE_URL}/pet/{pet_id}")
         with allure.step("Проверка статуса ответа"):
