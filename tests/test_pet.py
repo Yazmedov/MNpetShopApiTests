@@ -1,7 +1,10 @@
-from http.client import responses
+import http.client
+from http.client import responses, error
+from unittest import expectedFailure
 
 import allure
 import jsonschema
+import pytest
 import requests
 
 from .conftest import create_pet
@@ -110,6 +113,7 @@ class TestPet:
             assert response_json['id'] == payload['id'], "id питомцев не совпадает с ожидаемым"
             assert response_json['name'] == payload['name'], "name питомцев не совпадает с ожидаемым"
             assert response_json['status'] == payload['status'], "status питомцев не совпадает с ожидаемым"
+
     @allure.title("Удаление питомца")
     def test_pet_delete(self, create_pet):
         with allure.step("Получение ID созданного питомца"):
@@ -122,4 +126,32 @@ class TestPet:
             response = requests.get(f"{BASE_URL}/pet/{pet_id}")
             assert response.status_code == 404
 
+    @allure.title("Получение списка питомцев по статусу")
+    @pytest.mark.parametrize(
+        "status, expected_status_code",
+        [
+            ("available", 200),
+            ("pending", 200),
+            ("sold", 200),
+        ],
+    )
+    def test_get_pets_by_status(self, status, expected_status_code):
+        with allure.step(f"Отправка запроса на получение питомцев по статусу {status}"):
+            response = requests.get(f"{BASE_URL}/pet/findByStatus", params={"status": status})
+        with allure.step("Проверка статуса ответа и формата данных"):
+            assert response.status_code == expected_status_code
+            assert isinstance(response.json(), list)
 
+    @allure.title("Получение списка питомцев по несуществующему статусу")
+    @pytest.mark.parametrize(
+        "status, expected_status_code",
+        [
+            ("abrakadabra", 400),
+            (" ", 400)
+        ],
+    )
+    def test_get_pets_by_status(self, status, expected_status_code):
+        with allure.step(f"Отправка запроса на получение питомцев по статусу {status}"):
+            response = requests.get(f"{BASE_URL}/pet/findByStatus", params={"status": status})
+        with allure.step("Проверка статуса ответа"):
+            assert response.status_code == expected_status_code
