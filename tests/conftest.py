@@ -15,24 +15,3 @@ def create_pet():
     response = requests.post(url=f"{BASE_URL}/pet", json=payload)
     assert response.status_code == 200
     return response.json()
-@pytest.fixture(scope="function")
-def update_pet():
-    payload = {
-    "id": 1,
-    "name": "Buddy Updated",
-    "status": "sold"
-    }
-    response = requests.put(url=f"{BASE_URL}/pet", json=payload)
-    assert response.status_code == 200
-    return response.json()
-@pytest.fixture(scope="function")
-def delete_pet():
-    payload = {
-        "id": 1,
-        "name": "Buddy",
-        "status": "available"
-    }
-    response = requests.post(url=f"{BASE_URL}/pet", json=payload)
-    assert response.status_code == 200
-    response = requests.delete(url=f"{BASE_URL}/pet/1")
-    assert response.status_code == 200
