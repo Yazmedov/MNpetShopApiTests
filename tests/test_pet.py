@@ -150,7 +150,7 @@ class TestPet:
             (" ", 400)
         ],
     )
-    def test_get_pets_by_status(self, status, expected_status_code):
+    def test_get_pets_by_nonstatus(self, status, expected_status_code):
         with allure.step(f"Отправка запроса на получение питомцев по статусу {status}"):
             response = requests.get(f"{BASE_URL}/pet/findByStatus", params={"status": status})
         with allure.step("Проверка статуса ответа"):
